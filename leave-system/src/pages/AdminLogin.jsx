@@ -1,28 +1,40 @@
-import { useState } from 'react'; // Adjusted path
-import { Link, useNavigate } from 'react-router-dom';
-import ForgotPasswordModal from '../components/ForgotPasswordModal';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log("Logging in...", { email, password });
-    // Navigate to dashboard after successful login
-    navigate('/dashboard');
+    setError('');
+
+    // Simple admin credentials validation
+    if (email === 'admin@company.com' && password === 'admin123') {
+      // Store admin session
+      sessionStorage.setItem('isAdmin', 'true');
+      sessionStorage.setItem('adminEmail', email);
+      navigate('/admin/dashboard');
+    } else {
+      setError('Invalid admin credentials. Use admin@company.com / admin123');
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6 antialiased font-sans">
       <div className="flex w-full max-w-5xl h-[650px] bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
-
         <div className="w-full p-16 flex flex-col items-center justify-center bg-white">
           <div className="w-full max-w-sm">
-            <h2 className="text-3xl font-black text-slate-900 mb-2">Welcome back!</h2>
-            <p className="text-slate-500 mb-8"> Please enter your credentials to proceed.</p>
+            <h2 className="text-3xl font-black text-slate-900 mb-2">Admin Login</h2>
+            <p className="text-slate-500 mb-8">Access the administrator panel</p>
+
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
 
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
@@ -30,9 +42,10 @@ export default function Login() {
                 <input
                   type="email"
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
-                  placeholder="you@example.com"
+                  placeholder="admin@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               <div>
@@ -43,6 +56,7 @@ export default function Login() {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
 
@@ -51,48 +65,18 @@ export default function Login() {
               </button>
             </form>
 
-            <div className=" flex justify-content items-center mt-6">
-              <button
-                type="button"
-                onClick={() => setIsForgotPasswordOpen(true)}
-                className="text-sm text-slate-600 hover:text-slate-900 font-semibold transition-colors"
-              >
-                Forgot password?
-              </button>
-            </div>
-
             <div className="relative my-8 text-center">
-              <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-widest relative z-10">or</span>
+              <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-widest relative z-10">Demo Credentials</span>
               <hr className="absolute top-1/2 w-full border-slate-100" />
             </div>
 
-            <p className="text-center text-slate-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="text-slate-900 font-bold hover:text-black transition-colors">
-                Sign Up
-              </Link>
-            </p>
-
-            <div className="relative my-8 text-center">
-              <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-widest relative z-10">Admin Access</span>
-              <hr className="absolute top-1/2 w-full border-slate-100" />
+            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs text-slate-600">
+              <p><strong>Email:</strong> admin@company.com</p>
+              <p><strong>Password:</strong> admin123</p>
             </div>
-
-            <Link
-              to="/admin/login"
-              className="block w-full text-center px-4 py-3 bg-slate-200 hover:bg-slate-300 text-slate-900 font-semibold rounded-xl transition-all"
-            >
-              Admin Login
-            </Link>
           </div>
         </div>
       </div>
-
-      {/* Forgot Password Modal */}
-      <ForgotPasswordModal 
-        isOpen={isForgotPasswordOpen} 
-        onClose={() => setIsForgotPasswordOpen(false)}
-      />
     </div>
   );
 }
