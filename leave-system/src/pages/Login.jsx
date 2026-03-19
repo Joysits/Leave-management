@@ -1,6 +1,7 @@
 import { useState } from 'react'; // Adjusted path
 import { Link, useNavigate } from 'react-router-dom';
 import ForgotPasswordModal from '../components/ForgotPasswordModal';
+import { login } from '../services/apiclient'; '../services/apiclient';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -10,9 +11,20 @@ export default function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    // validate if fields are empty first
+    if (!email || !password) {
+      alert("Please enter both email and password.");
+      return;
+    }
     console.log("Logging in...", { email, password });
-    // Navigate to dashboard after successful login
-    navigate('/dashboard');
+    login(email, password)
+      .then((userData) => {
+        console.log("Login successful:", userData);
+        navigate('/dashboard');
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+      });
   };
 
   return (
@@ -21,7 +33,7 @@ export default function Login() {
 
         <div className="w-full p-16 flex flex-col items-center justify-center bg-white">
           <div className="w-full max-w-sm">
-            <h2 className="text-3xl font-black text-slate-900 mb-2">Welcome back!</h2>
+            <h2 className="text-3xl font-black text-slate-900 mb-2">Welcome!</h2>
             <p className="text-slate-500 mb-8"> Please enter your credentials to proceed.</p>
 
             <form onSubmit={handleLogin} className="space-y-4">
@@ -60,30 +72,8 @@ export default function Login() {
                 Forgot password?
               </button>
             </div>
-
-            <div className="relative my-8 text-center">
-              <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-widest relative z-10">or</span>
-              <hr className="absolute top-1/2 w-full border-slate-100" />
-            </div>
-
-            <p className="text-center text-slate-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="text-slate-900 font-bold hover:text-black transition-colors">
-                Sign Up
-              </Link>
-            </p>
-
-            <div className="relative my-8 text-center">
-              <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-widest relative z-10">Admin Access</span>
-              <hr className="absolute top-1/2 w-full border-slate-100" />
-            </div>
-
-            <Link
-              to="/admin/login"
-              className="block w-full text-center px-4 py-3 bg-slate-200 hover:bg-slate-300 text-slate-900 font-semibold rounded-xl transition-all"
-            >
-              Admin Login
-            </Link>
+                                  
+    
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'; // Adjusted path
 import { Link } from 'react-router-dom';
+import { signup } from '../services/apiclient';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -21,7 +22,19 @@ export default function SignUp() {
   const handleSignUp = (e) => {
     e.preventDefault();
     console.log("Signing up...", formData);
-    // Add validation and API call here
+    // Validate form data before sending to API
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    signup(formData)
+      .then((userData) => {
+        console.log("Signup successful:", userData);
+      })
+      .catch((error) => {
+        console.error("Signup failed:", error);
+      });
+
   };
 
   return (
@@ -96,6 +109,31 @@ export default function SignUp() {
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
                   placeholder="Re-enter your password"
                   value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div>
+                 <input
+                  type="department"
+                  name="department"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                  placeholder="Department"
+                  value={formData.department || ''}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              
+              <div>
+                 <input
+                  type="department"
+                  name="department"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                  placeholder="Department"
+                  value={formData.department || ''}
                   onChange={handleChange}
                   required
                 />
