@@ -1,5 +1,5 @@
 import { useState } from 'react'; // Adjusted path
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ForgotPasswordModal from '../components/ForgotPasswordModal';
 import { login } from '../services/apiclient'; '../services/apiclient';
 
@@ -57,8 +57,11 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+              {/**sign in button to lead to the dashboard**/}
 
-              <button type="submit" className="w-full bg-slate-900 hover:bg-black text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+              <button 
+              type="submit" 
+              className="w-full bg-slate-900 hover:bg-black text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
                 Sign In <span className="text-xl">→</span>
               </button>
             </form>

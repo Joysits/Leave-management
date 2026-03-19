@@ -6,7 +6,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [isApplyLeaveOpen, setIsApplyLeaveOpen] = useState(false);
 
-  // Personalized greeting logic using Admin-defined data or Email
+  // Greeting logic
   const [greeting] = useState(() => {
     const adminSetFirstName = localStorage.getItem('userFirstName');
     const adminSetEmail = localStorage.getItem('userEmail') || "";
@@ -28,7 +28,7 @@ export default function Dashboard() {
     return `Welcome again, ${finalName}`;
   });
 
-  // Leave history data with Admin comments
+  // Mock data for the history table
   const [leaveRequests, setLeaveRequests] = useState([
     { 
       id: 1, 
@@ -55,7 +55,7 @@ export default function Dashboard() {
       end: '2026-04-17', 
       status: 'Rejected', 
       reason: 'Exam preparation',
-      adminComment: 'Please attach your official exam timetable for verification.' 
+      adminComment: 'Please attach your official exam timetable.' 
     },
   ]);
 
@@ -87,13 +87,32 @@ export default function Dashboard() {
       <aside className="w-64 bg-slate-900 text-white hidden md:flex flex-col">
         <div className="p-6 text-xl font-bold border-b border-slate-800 tracking-tight">LeaveSystem</div>
         <nav className="flex-1 p-4 space-y-2">
-          <button className="w-full text-left block px-4 py-2 bg-blue-600 rounded-lg font-medium">Dashboard</button>
-          <button onClick={() => navigate('/my-requests')} className="w-full text-left block px-4 py-2 hover:bg-slate-800 rounded-lg transition text-slate-300">My Requests</button>
-          {/* Calendar link returned here */}
-          <button onClick={() => navigate('/calendar')} className="w-full text-left block px-4 py-2 hover:bg-slate-800 rounded-lg transition text-slate-300">Calendar</button>
+          {/* Dashboard Link */}
+          <button className="w-full text-left block px-4 py-2 bg-blue-600 rounded-lg font-medium">
+            Dashboard
+          </button>
+          
+          {/* History Link (Added back to Sidebar) */}
+          <button 
+            onClick={() => navigate('/my-requests')} 
+            className="w-full text-left block px-4 py-2 hover:bg-slate-800 rounded-lg transition text-slate-300"
+          >
+            My Requests (History)
+          </button>
+
+          {/* Calendar Link */}
+          <button 
+            onClick={() => navigate('/calendar')} 
+            className="w-full text-left block px-4 py-2 hover:bg-slate-800 rounded-lg transition text-slate-300"
+          >
+            Calendar
+          </button>
         </nav>
+        
         <div className="p-4 border-t border-slate-800">
-          <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-slate-400 hover:text-white transition">Logout</button>
+          <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-slate-400 hover:text-white transition">
+            Logout
+          </button>
         </div>
       </aside>
 
@@ -125,11 +144,13 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Leave History Table with Admin Comments */}
+        {/* Leave History Section on Dashboard */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           <div className="p-6 border-b border-slate-100 bg-white flex justify-between items-center">
             <h2 className="font-bold text-slate-800 text-lg">Leave History & Admin Remarks</h2>
-            <button onClick={() => navigate('/my-requests')} className="text-blue-600 text-sm font-bold hover:underline">View Full History</button>
+            <button onClick={() => navigate('/my-requests')} className="text-blue-600 text-sm font-bold hover:underline">
+              View Full History
+            </button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
