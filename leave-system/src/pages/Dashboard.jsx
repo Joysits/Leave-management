@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [greeting] = useState(() => {
     const adminSetFirstName = localStorage.getItem('userFirstName');
     const adminSetEmail = localStorage.getItem('userEmail') || "";
-    let displayName = "Employee";
+    let displayName = "Jema";
 
     if (adminSetFirstName && adminSetFirstName !== "null") {
       displayName = adminSetFirstName;

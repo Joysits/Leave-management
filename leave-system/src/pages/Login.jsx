@@ -18,8 +18,8 @@ export default function Login() {
     }
     console.log("Logging in...", { email, password });
     login(email, password)
-      .then((userData) => {
-        console.log("Login successful:", userData);
+      .then(() => {
+        console.log("Login successful");
         navigate('/dashboard');
       })
       .catch((error) => {
